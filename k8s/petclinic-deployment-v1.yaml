@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: petclinic-deployment-v1
+  labels:
+    app: petclinic-v1
+spec:
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1 # is an optional field that specifies the maximum number of Pods that can be unavailable during the update process 
+      maxSurge: 1 # is an optional field that specifies the maximum number of Pods that can be created over the desired number of Pods 
+  replicas: 2
+  selector:
+    matchLabels:
+      app: petclinic-v1
+  template:
+    metadata:
+      labels:
+        app: petclinic-v1
+    spec:
+      containers:
+        - name: petclinic-container
+          env:
+            - name: MYSQL_URL
+              value: jdbc:mysql://mysql-headless/petclinic
+            - name: SERVER_PORT
+              value: "8080"
+          image: roanbrasil/spring-petclinic:latest
+          imagePullPolicy: Always
+          #imagePullPolicy: IfNotPresent
+          #resources:
+            #limits:
+              #cpu: 500m
+            #requests:
+              #cpu: 200m
+          ports:
+            - containerPort: 8080
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 8080
+            periodSeconds: 10 #specifies that the kubelet should perform a liveness probe every 10 seconds
+            initialDelaySeconds: 10 #tells the kubelet that it should wait 10 seconds before performing the first probe
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: 8080
+            failureThreshold: 3 #the number of times the readiness probe needs to fail before the pod will no longer be considered ready
+            periodSeconds: 10 #specifies that the kubelet should perform a liveness probe every 10 seconds
+            initialDelaySeconds: 10 #tells the kubelet that it should wait 10 seconds before performing the first probe
+         #  env:
+         #   - name: MYSQL_URL
+         #     value: jdbc:mysql://mysql-headless/petclinic
+         #   - name: SERVER_PORT
+         #     value: "8080"
+          # resources: # QoS Guaranteed limit e request iguais
+          #   limits:
+          #     cpu: 1000m
+          #     memory: 600Mi 
+          #   requests:
+          #     cpu: 1000m
+          #     memory: 600Mi
