@@ -1,12 +1,16 @@
 name: CD - Homelab
 permissions: write-all
 on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
   #workflow_run:
   #    workflows: [CI - Build/Analyze]
   #    types: [completed]
-  push:
-    branches:
-      - master
+ # push:
+ #   branches:
+ #     - master
 env:  
   KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
   KUBE_VERSION: "v1.29.1"
