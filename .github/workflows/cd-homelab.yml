@@ -1,0 +1,48 @@
+name: CD - Homelab
+permissions: write-all
+on:
+  #workflow_run:
+  #    workflows: [CI - Build/Analyze]
+  #    types: [completed]
+  push:
+    branches:
+      - master
+env:  
+  KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
+  KUBE_VERSION: "v1.29.1"
+jobs:
+  deploy:
+  #on-success:
+    runs-on: self-hosted
+  #  if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Download kubectl
+        run: |
+            curl -L https://storage.googleapis.com/kubernetes-release/release/$KUBE_VERSION/bin/darwin/amd64/kubectl -o ./kubectl && 
+            chmod +x ./kubectl
+     # - name: Deploy MYSQL App (Config Persistent Volume Claim)
+     #   run: kubectl apply -f k8s/mysql-config-persistentvolumeclaim.yaml
+     # - name: Deploy MYSQL App (Data Persisten Volume Claim)
+     #   run: kubectl apply -f k8s/mysql-data-persistentvolumeclaim.yaml
+     # - name: Deploy MYSQL App (Deployment)
+     #   run: kubectl  apply -f k8s/mysql-deployment.yaml
+      - name: Deploy PetClinic App V1 (Deployment)
+        run: kubectl  apply -f k8s/petclinic-deployment-v1.yaml
+     # - name: Deploy PetClinic App V2 (Deployment)
+     #   run: kubectl  apply -f k8s/petclinic-deployment-v2.yaml 
+     # - name: Deploy MYSQL App (Service)
+     #   run: kubectl  apply -f k8s/mysql-service.yaml
+      - name: Deploy PetClinic App V1 (Service)
+        run: kubectl apply -f k8s/petclinic-service-v1.yaml
+    #  - name: Deploy PetClinic App V2 (Service)
+    #    run: kubectl apply -f k8s/petclinic-service-v2.yaml
+     # - name: HPA
+     #   run: kubectl apply -f k8s/petclinic-hpa-deployment.yaml
+     # - run: echo 'The triggering workflow passed'
+  #on-failure:
+  #  runs-on: ubuntu-latest
+  #  if: ${{ github.event.workflow_run.conclusion == 'failure' }}
+  #  steps:
+  #    - run: echo 'The triggering workflow failed'
