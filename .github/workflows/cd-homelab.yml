@@ -35,14 +35,14 @@ jobs:
      #   run: kubectl  apply -f k8s/mysql-deployment.yaml
       - name: Deploy PetClinic App V1 (Deployment)
         run: kubectl  apply -f k8s/petclinic-deployment-v1.yaml
-     # - name: Deploy PetClinic App V2 (Deployment)
-     #   run: kubectl  apply -f k8s/petclinic-deployment-v2.yaml 
+      - name: Deploy PetClinic App V2 (Deployment)
+        run: kubectl  apply -f k8s/petclinic-deployment-v2.yaml 
      # - name: Deploy MYSQL App (Service)
      #   run: kubectl  apply -f k8s/mysql-service.yaml
       - name: Deploy PetClinic App V1 (Service)
         run: kubectl apply -f k8s/petclinic-service-v1.yaml
-    #  - name: Deploy PetClinic App V2 (Service)
-    #    run: kubectl apply -f k8s/petclinic-service-v2.yaml
+      - name: Deploy PetClinic App V2 (Service)
+        run: kubectl apply -f k8s/petclinic-service-v2.yaml
      # - name: HPA
      #   run: kubectl apply -f k8s/petclinic-hpa-deployment.yaml
      # - run: echo 'The triggering workflow passed'
