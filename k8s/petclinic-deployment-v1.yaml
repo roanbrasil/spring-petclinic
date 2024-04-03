@@ -26,7 +26,7 @@ spec:
               value: jdbc:mysql://mysql-headless/petclinic
             - name: SERVER_PORT
               value: "8080"
-          image: roanbrasil/springboot-petclinic-test:v2 #roanbrasil/spring-petclinic:latest
+          image: roanbrasil/spring-petclinic:latest
           imagePullPolicy: Always
           #imagePullPolicy: IfNotPresent
           #resources:
