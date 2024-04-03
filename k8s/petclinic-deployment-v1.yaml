@@ -29,11 +29,11 @@ spec:
           image: roanbrasil/spring-petclinic:latest
           imagePullPolicy: Always
           #imagePullPolicy: IfNotPresent
-          #resources:
-            #limits:
-              #cpu: 500m
-            #requests:
-              #cpu: 200m
+          resources:
+            limits:
+              cpu: 500m
+            requests:
+              cpu: 200m
           ports:
             - containerPort: 8080
           livenessProbe:
