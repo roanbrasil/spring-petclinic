@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mysql-pv-volume
+  labels:
+    app: mysql
+    tier: database
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    #Padrao Windows
+    #path: /run/desktop/mnt/host/c/mysql/data
+    # Mac
+    path: /Users/roanmonteiro/mysql/data
