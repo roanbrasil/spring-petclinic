@@ -1,0 +1,31 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-subdomain
+  annotations:
+    nginx.ingress.kubernetes.io/default-backend: ingress-nginx-controller
+    kubernetes.io/ingress.class: nginx
+    ## tells ingress to check for regex in the config file
+    nginx.ingress.kubernetes.io/use-regex: "true"
+spec:
+  rules:
+    - host: petclinic-service-v1.workshop-petclinic.com 
+      http:
+        paths:
+          - pathType: Prefix
+            path: "/"
+            backend:
+              service:
+                name: petclinic-service-v1
+                port:
+                  number: 8081
+    - host: petclinic-service-v2.workshop-petclinic.com 
+      http:
+        paths:
+          - pathType: Prefix
+            path: "/"
+            backend:
+              service:                
+                name: petclinic-service-v2
+                port:
+                  number: 8082
